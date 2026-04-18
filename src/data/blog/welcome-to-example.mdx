@@ -17,6 +17,6 @@ The blog loader (`src/lib/blog-loader.ts`) parses frontmatter from these MDX fil
 
 - MDX files are bundled via Wrangler's `rules: [{ type: "Text" }]` entry — no filesystem access at runtime.
 - Frontmatter is parsed by a hand-rolled parser in `blog-loader.ts` (no `gray-matter` dep — it doesn't run under the V8 isolate).
-- The `list_blog_posts` tool sorts by `date` descending; this post dates to `2026-02-01`, which places it after `second-post.mdx` in the sorted list.
+- The `list_blog_posts` tool sorts by `date` descending (newest-first); this post dates to `2026-02-01`, which places it BEFORE `second-post.mdx` (dated `2026-01-01`) in the sorted list.
 
 For deployment steps and protocol details, see the README.
