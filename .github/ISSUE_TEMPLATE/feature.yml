@@ -1,0 +1,34 @@
+name: Feature request
+description: Propose a new tool, workflow, or capability.
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: this is a reference implementation. Features that are tightly coupled to a specific deployment (specific auth provider, specific data schema) are unlikely to land — fork instead. General-purpose improvements (new MCP capabilities, better Workers patterns, better tests) are very welcome.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Concrete API or behavior you'd like to see.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+  - type: textarea
+    id: threat
+    attributes:
+      label: Threat-model notes
+      description: If this widens the exposed surface (new tool, new input, write behavior), what's the attack surface change?
+    validations:
+      required: false

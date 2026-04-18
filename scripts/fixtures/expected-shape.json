@@ -1,0 +1,14 @@
+{
+  "products": {
+    "count": 8,
+    "requiredFields": ["id", "name", "tagline", "description", "features", "status", "href"]
+  },
+  "industries": {
+    "count": 8,
+    "requiredFields": ["slug", "name", "description"]
+  },
+  "useCases": {
+    "count": 4,
+    "requiredFields": ["slug", "name", "description"]
+  }
+}

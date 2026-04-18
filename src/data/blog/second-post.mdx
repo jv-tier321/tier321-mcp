@@ -1,0 +1,24 @@
+---
+title: "Second Post"
+description: "A second placeholder post, dated earlier so the newest-first sort is exercised by the tests."
+date: "2026-01-01"
+author: "Example Corp"
+tags: ["reference"]
+featured: false
+---
+
+## Second placeholder
+
+Dated `2026-01-01`, this post sits behind `welcome-to-example.mdx` in the newest-first sort. The test `list_blog_posts > returns posts newest-first by date` uses the date spread between these two posts to prove the sort logic.
+
+If you change the dates, update the test assertion in `test/tools.test.ts` to match.
+
+## Frontmatter
+
+The frontmatter parser in `blog-loader.ts` is intentionally minimal. It supports:
+
+- Single-line string values (quoted or unquoted)
+- Boolean `true` / `false`
+- Array values inside `[...]` with single-line members
+
+Multi-line values, YAML flow sequences, and nested objects are not supported. That's by design — the parser is a few dozen lines and has no runtime dependencies.

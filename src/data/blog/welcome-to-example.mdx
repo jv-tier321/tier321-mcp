@@ -1,0 +1,22 @@
+---
+title: "Welcome to Example Corp"
+description: "The first placeholder post for the tier321-mcp reference implementation."
+date: "2026-02-01"
+author: "Example Corp"
+tags: ["welcome", "reference"]
+featured: true
+---
+
+## Hello from the reference implementation
+
+This is placeholder content shipped with `tier321-mcp`, a reference MCP server on Cloudflare Workers. When you fork this repo, replace this file (and `second-post.mdx`) with your own content.
+
+The blog loader (`src/lib/blog-loader.ts`) parses frontmatter from these MDX files at build time and exposes them through the `list_blog_posts` and `get_blog_post` tools. The shape of this file — frontmatter fields, markdown body — is what matters; the words are illustrative.
+
+## What this file proves
+
+- MDX files are bundled via Wrangler's `rules: [{ type: "Text" }]` entry — no filesystem access at runtime.
+- Frontmatter is parsed by a hand-rolled parser in `blog-loader.ts` (no `gray-matter` dep — it doesn't run under the V8 isolate).
+- The `list_blog_posts` tool sorts by `date` descending; this post dates to `2026-02-01`, which places it after `second-post.mdx` in the sorted list.
+
+For deployment steps and protocol details, see the README.

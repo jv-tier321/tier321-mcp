@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.wrangler/
+
+# Local environment
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / IDE
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Coverage / test artifacts
+coverage/
+.nyc_output/

@@ -1,0 +1,48 @@
+name: Bug report
+description: Something is broken or behaving incorrectly.
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report. **Security issues do NOT go here** — see `SECURITY.md`.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The commit SHA or tag where you reproduced this.
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version, operating system, deploy target (local / Cloudflare).
+      placeholder: Node 22.11 / macOS 14 / local wrangler dev
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Exact commands or requests that trigger the bug.
+      placeholder: |
+        1. `npm install`
+        2. `npm run dev`
+        3. `curl -X POST ...`
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include error messages, logs, or screenshots.
+    validations:
+      required: true
