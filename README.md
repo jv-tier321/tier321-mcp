@@ -61,6 +61,10 @@ Everything you add to these catalogs or imported blog posts becomes anonymously 
 
 See [architecture and trust boundaries](docs/ARCHITECTURE.md), [security policy](SECURITY.md), and [enhancements for discussion](docs/ENHANCEMENTS.md).
 
+## Maintainer staging
+
+The dedicated `tier321-mcp-staging` Worker runs this public example server for live checks. Use `npm run build:staging` and `npm run deploy:staging`; the default deploy command is a different target. Staging has no custom domain, disables version preview URLs, and uses its own rate-limit namespace. It remains anonymously readable. See the [deployment runbook and validation record](docs/DEPLOYMENT.md) for the endpoint, tests, exposure boundaries and rollback procedure.
+
 ## Customize and deploy your own instance
 
 1. Replace the fictional catalogs in `src/data/`, company/contact constants in `src/tools/`, and explicit blog imports in `src/lib/blog-loader.ts`. Review all returned fields for public suitability.

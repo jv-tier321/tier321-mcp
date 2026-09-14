@@ -54,4 +54,6 @@ Runtime: MCP SDK 1.30.0, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development d
 
 ## Validation scope
 
+The named `staging` environment isolates live validation in `tier321-mcp-staging`, with an explicit empty browser-origin list, its own limiter namespace, no custom routes and version preview URLs disabled. It exposes only this repository's public example data through its Worker-specific `workers.dev` address. The default Worker and separately maintained production service are not staging deployment targets. See [deployment and live validation](DEPLOYMENT.md) for operator commands, evidence and rollback limits.
+
 Tests run against Miniflare and the actual Worker/SDK: eight tools, rate limits, initialization, notifications, invalid protocols, media types, malformed/oversized/streamed bodies, batch rejection, argument bounds, origin policy and sanitized errors. Build and release packaging are local checks. They do not prove the configuration or availability of another deployment.
