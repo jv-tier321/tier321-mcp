@@ -32,7 +32,7 @@ The only platform binding called by runtime code is `MCP_RATE_LIMITER`. No runti
 
 Assets are Worker availability, intentional public-data boundaries, repository/release integrity and operator credentials. An anonymous attacker controls request headers and bodies and can enumerate all public tools. That grants no repository, Cloudflare deployment, filesystem or outbound-request authority.
 
-Request admission counts HTTP requests, while the body reader independently bounds work per request. Arrays are rejected before the SDK, preventing batch amplification; bounded IDs/slugs and status arrays limit reflected or validation work. The body reader does not trust Content-Length alone. A fresh server is closed after its complete JSON response; no session map persists across requests.
+The limiter counts `POST /mcp` requests that pass Origin, route and method checks. Other paths, `OPTIONS`, unsupported methods and rejected origins return before the limiter. The body reader independently bounds work per admitted request. Arrays are rejected before the SDK, preventing batch amplification; bounded IDs/slugs and status arrays limit reflected or validation work. The body reader does not trust Content-Length alone. A fresh server is closed after its complete JSON response; no session map persists across requests.
 
 CORS is not authorization. Explicit Origin checks prevent arbitrary browser-origin use of a locally running instance. Native callers without Origin remain supported because this catalog is intentionally public. Bind local development only to loopback. Do not add private data or write operations without an authenticated, scoped authorization design and new tests.
 

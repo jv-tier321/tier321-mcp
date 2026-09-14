@@ -55,7 +55,7 @@ Everything you add to these catalogs or imported blog posts becomes anonymously 
 - `OPTIONS /mcp`: preflight for approved origins. `GET` and other methods return `405` with `Allow: POST, OPTIONS`; standalone SSE and DELETE sessions are unsupported. Other paths return `404`.
 - Send `Content-Type: application/json` and `Accept: application/json, text/event-stream`. Content encodings and batches are rejected.
 - Actual streamed body limit: **16 KiB**, total body-read timeout: **5 seconds**, maximum JSON nesting: **32 levels**. Oversized requests receive `413`; read timeouts receive `408`; invalid JSON/messages receive `400`.
-- Cloudflare rate-limit binding: **20 HTTP requests per 10 seconds per IP per Cloudflare location**, with `429` and `Retry-After: 10`. Counters are eventually consistent, not a strict global quota. The Worker fails closed if the binding fails. Keep the response retry interval aligned with the binding period when customizing it.
+- Cloudflare rate-limit binding: **20 POST /mcp requests per 10 seconds per IP per Cloudflare location**, with `429` and `Retry-After: 10`. Other paths, preflight, unsupported methods and rejected origins return before this limiter. Counters are eventually consistent, not a strict global quota. The Worker fails closed if the binding fails. Keep the response retry interval aligned with the binding period when customizing it.
 - Origin is checked against the explicit allowlist; invalid origins receive `403`. It is not authentication. Public native clients can access all content.
 - Responses use `Cache-Control: no-store`, `X-Content-Type-Options: nosniff` and `Vary: Origin`. Unexpected exceptions produce a generic response and fixed log event, without request bodies or exception text.
 
