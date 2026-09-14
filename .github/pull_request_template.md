@@ -23,4 +23,6 @@
 - [ ] `npm run verify:parity` passes locally
 - [ ] No secrets added to the repo (check `.env`, `wrangler.jsonc`, workflows)
 - [ ] If this change widens the exposed tool surface (new tool, new input field, write behavior), the threat model has been considered and documented in the PR description
+- [ ] `npm run audit`, `npm run verify:release` and the build/package checks pass
+- [ ] Browser-origin and public-data exposure changes are documented
 - [ ] `CHANGELOG.md` updated if this is a user-visible change

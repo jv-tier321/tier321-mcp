@@ -6,6 +6,7 @@ export function registerBlogTools(server: McpServer): void {
   server.registerTool(
     'list_blog_posts',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: "List the organization's published blog posts (metadata only, no body).",
       // no inputSchema — zero-arg tool (SDK convention)
     },
@@ -17,9 +18,10 @@ export function registerBlogTools(server: McpServer): void {
   server.registerTool(
     'get_blog_post',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: 'Get a blog post by slug (returns full markdown body plus metadata).',
       inputSchema: {
-        slug: z.string().describe('Post slug, e.g. "welcome-to-example"'),
+        slug: z.string().min(1).max(128).describe('Post slug, e.g. "welcome-to-example"'),
       },
     },
     async ({ slug }) => {

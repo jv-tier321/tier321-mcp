@@ -8,6 +8,7 @@ export function registerCompanyTools(server: McpServer): void {
   server.registerTool(
     'get_company_info',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: 'Returns the standard company description and positioning.',
       // no inputSchema — zero-arg tool (SDK convention)
     },
