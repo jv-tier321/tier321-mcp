@@ -2,6 +2,8 @@
 
 This describes public reference version 0.2.0. The separately operated `mcp.tier321.com` service is outside this repository's release and validation scope. The older artwork under `docs/brand/` is historical; the diagram and contracts below describe the current implementation.
 
+The [public POC boundary](PUBLIC_POC.md) defines what may be published and how the demonstration stays separate from private TIER 321 systems. Catalog descriptions are fictional examples; they do not confer the integrations or permissions they describe. Public architecture documents cover this reference implementation and omit account-specific deployment records.
+
 ```mermaid
 flowchart LR
   C[Anonymous MCP client] --> O[Exact Origin, route and method checks]

@@ -15,6 +15,8 @@ Dependencies are pinned intentionally. Update related Cloudflare packages togeth
 
 ## Changes and review
 
+Everything in this repository, its issues, PRs, releases and attachments is public. Follow the [public POC boundary](docs/PUBLIC_POC.md): use fictional or explicitly approved public data, placeholder deployment values and sanitized evidence. Keep account identifiers, operator deployment records, customer data, internal plans and credentials in private systems. Inspect screenshots, logs and full document bodies before attaching or bundling them. Secret scanning cannot recognize every kind of confidential information.
+
 Branch from main using a focused `fix/`, `feat/`, `chore/` or `docs/` branch. Use conventional commit subjects. Explain behavior, exposure changes and validation in the PR. All required checks must pass, review conversations must be resolved, and security issues must be handled before merge. Never bypass checks to release.
 
 For a tool change, register it in `src/tools/`, wire it in `src/server.ts`, add behavior and input-boundary tests, and update the tools table and architecture. Keep annotations accurate; they are not access controls. Review every field and imported document as public. Do not introduce dynamic paths, external fetching, write operations or private records without a separate threat model.
