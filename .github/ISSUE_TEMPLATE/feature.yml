@@ -6,6 +6,7 @@ body:
     attributes:
       value: |
         Before filing: this is a reference implementation. Features that are tightly coupled to a specific deployment (specific auth provider, specific data schema) are unlikely to land — fork instead. General-purpose improvements (new MCP capabilities, better Workers patterns, better tests) are very welcome.
+        This request is public. Use fictional examples; do not include private customer requirements, internal plans, account identifiers or credentials. See `docs/PUBLIC_POC.md`.
   - type: textarea
     id: problem
     attributes:

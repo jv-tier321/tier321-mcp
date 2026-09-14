@@ -8,6 +8,8 @@
 
 A public reference [Model Context Protocol](https://modelcontextprotocol.io/) server on Cloudflare Workers. Eight anonymous, read-only tools expose bundled **fictional Example Corp data**. This repository is distinct from the separately maintained `mcp.tier321.com` production deployment; a release here does not update that service.
 
+This is TIER 321's runnable MCP proof of concept. It demonstrates tool discovery, catalog lookups, input controls and reproducible deployment without access to private TIER 321 systems. Follow the [public POC and publication boundary](docs/PUBLIC_POC.md) when contributing content, configuration, test evidence or new capabilities.
+
 ## Quickstart
 
 Use a current patched Node **22 or 24** release. A Cloudflare account is unnecessary for local tests.
@@ -63,7 +65,7 @@ See [architecture and trust boundaries](docs/ARCHITECTURE.md), [security policy]
 
 ## Maintainer staging
 
-The dedicated `tier321-mcp-staging` Worker runs this public example server for live checks. Use `npm run build:staging` and `npm run deploy:staging`; the default deploy command is a different target. Staging has no custom domain, disables version preview URLs, and uses its own rate-limit namespace. It remains anonymously readable. See the [deployment runbook and validation record](docs/DEPLOYMENT.md) for the endpoint, tests, exposure boundaries and rollback procedure.
+The dedicated `tier321-mcp-staging` Worker runs this public example server for live checks. Use `npm run build:staging` and `npm run deploy:staging`; the default deploy command is a different target. Staging has no custom domain, disables version preview URLs, and uses its own rate-limit namespace. It remains anonymously readable. See the [deployment runbook and validation summary](docs/DEPLOYMENT.md) for placeholder endpoint instructions, tests, exposure boundaries and rollback procedure. Keep account-specific deployment records in a private operator location.
 
 ## Customize and deploy your own instance
 
