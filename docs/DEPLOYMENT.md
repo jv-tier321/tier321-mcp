@@ -49,7 +49,7 @@ npm run smoke:staging -- https://tier321-mcp-staging.YOUR-SUBDOMAIN.workers.dev/
 npm run smoke:staging -- https://tier321-mcp-staging.YOUR-SUBDOMAIN.workers.dev/mcp --check-rate-limit
 ```
 
-The script rejects production/custom-domain URLs, credentials, non-HTTPS URLs and redirects. It checks SDK initialization and the package version, the exact eight tools and their safety annotations, successful calls, argument bounds, response security headers, routes/methods, native OPTIONS, denied browser origins/preflight, media types/encodings, invalid JSON/UTF-8, batches, body size and JSON depth. It prints check names and metadata without tool response contents. Normal requests are paced; the optional rate probe sends at most 30 sequential small pings, stops at the first 429, checks `Retry-After`, and verifies recovery after 11 seconds. It does not run automatically in CI.
+The script rejects production/custom-domain URLs, credentials, non-HTTPS URLs and redirects. It checks SDK initialization and the package version, the exact eight tools and their safety annotations, successful calls, argument bounds, response security headers, routes/methods, native OPTIONS, denied browser origins/preflight, media types/encodings, invalid JSON/UTF-8, batches, body size and JSON depth. It prints check names and metadata without tool response contents. Normal requests are paced; the optional rate probe sends at most 30 small pings over one TLS-verified HTTP/2 connection with at most three requests in flight, stops scheduling batches once a 429 is observed, checks `Retry-After`, and verifies recovery after 11 seconds. It records probe duration and Cloudflare location codes, without client IP addresses. The probe waits for a quiet window and a wall-clock boundary to reduce timing noise; this does not guarantee alignment with provider counters. It does not run automatically in CI.
 
 Rate counters are eventually consistent and location-local. Failure to observe 429 within this bounded probe requires investigation, not increasing traffic. A successful run does not establish a global quota or load-test capacity. The five-second slow-body deadline, streamed-byte enforcement without Content-Length, internal binding failure and sanitized unexpected exceptions remain covered by local tests; this live smoke check does not deliberately trigger those conditions at the edge. Positive browser-origin checks require a separately reviewed allowlist change.
 
@@ -69,4 +69,24 @@ Review the rollback target and any changed binding settings. Do not substitute a
 
 ## Deployment record
 
-The first staging deployment record and live results will be added after verification. The application source is the v0.2.0 release; this change adds staging configuration, an operator smoke script and documentation.
+### 2026-09-14 — v0.2.0
+
+| Evidence | Verified value |
+|---|---|
+| Endpoint | `https://tier321-mcp-staging.jv-a60.workers.dev/mcp` |
+| Deployment time | 2026-09-14 19:02:11 UTC |
+| Worker version | `b8804cd2-e33b-43d4-b092-2909fe4df545`, 100% of staging traffic |
+| Deployment source | `2f87b2142a2a5c21ed283e13906594f31507985f` (staging configuration added to v0.2.0) |
+| Application release | [v0.2.0](https://github.com/jv-tier321/tier321-mcp/releases/tag/v0.2.0), release commit `c6c2669f9ff1788e5afc365c3343135286f32d51` |
+| Bundle comparison | Deployed build's `index.js` byte-for-byte identical to the published v0.2.0 archive |
+| `index.js` SHA-256 | `308f9748b038f4c88d965acc653cda358fbb011c112c488cdf8fdcc4ac237054` |
+| Prior staging version | None; this was the first deployment |
+| Live smoke completion | 2026-09-14 19:08:57 UTC; 28 named checks passed; 54 HTTP requests in the final run |
+| Rate probe | 429 observed within 24 pings over one HTTP/2 connection; 5,759 ms; all 24 at IAD; at most three in flight |
+| Recovery | Ping returned 200 after an 11-second wait; limited response included `Retry-After: 10` |
+
+The live SDK client negotiated version 0.2.0, verified the exact eight annotated tools and called each successfully. All request-boundary checks listed above passed. Cloudflare's API confirmed the empty origin allowlist, isolated rate-limit binding, `workers.dev` enabled and version preview URLs disabled. Local verification passed 55 Miniflare tests, types, data shapes, both bundles, release metadata/packaging and a zero-match npm advisory audit.
+
+Earlier bounded probes were inconclusive: measured sequential ping latency was 300–640 ms, and a 30-request concurrent probe was split between EWR and IAD. The final harness uses one connection and records timing and location counts. This is evidence of the documented per-location limiter and recovery, not proof of a strict global quota. See Cloudflare's [rate-limit accuracy and locality](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/).
+
+The existing `tier321-mcp-server` active version was checked before and after and remained unchanged. No custom production route or production deployment was modified. Subsequent operator-script and documentation changes do not change the deployed v0.2.0 application bundle. Rollback/disable commands are documented above; they were not executed during this first successful deployment.

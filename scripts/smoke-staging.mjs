@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
+import { connect as connectHttp2 } from 'node:http2'
 import { setTimeout as pause } from 'node:timers/promises'
 import { Client } from '@modelcontextprotocol/sdk/client/index.js'
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js'
@@ -107,24 +108,76 @@ await check('JSON depth bound', 400, {
 })
 
 let rateLimit = 'not requested'
+let rateProbe
 if (flags.includes('--check-rate-limit')) {
-  // One bounded, sequential probe on this staging Worker, then a recovery check.
+  // Keep the probe inside a ten-second window despite network latency. At most
+  // three requests are in flight and at most thirty are sent; never retry it.
   await pause(11_000)
+  await pause((10_000 - Date.now() % 10_000) % 10_000)
   let limited = false
-  for (let attempt = 1; attempt <= 30; attempt++) {
-    const response = await boundedFetch(endpoint, { method: 'POST', headers, body: ping }, false)
-    await response.arrayBuffer()
-    if (response.status === 429) {
-      assert.equal(response.headers.get('retry-after'), '10')
-      rateLimit = `429 observed on probe request ${attempt}`
-      limited = true
-      break
-    }
-    assert.equal(response.status, 200, 'rate probe ping')
+  const started = performance.now()
+  const locations = new Map()
+  let sent = 0
+  // One TLS-verified connection avoids distributing the probe across locations.
+  // HTTP/2 multiplexing bounds elapsed time without opening extra connections.
+  const session = connectHttp2(endpoint.origin)
+  session.on('error', () => {}) // connection/stream promises report failures below
+  function probePing() {
+    sent++
+    requests++
+    return new Promise((resolve, reject) => {
+      const stream = session.request({
+        ':method': 'POST', ':path': endpoint.pathname,
+        'content-type': headers['Content-Type'], accept: headers.Accept,
+      })
+      let responseHeaders
+      stream.setTimeout(15_000, () => stream.destroy(new Error('Rate probe request timed out')))
+      stream.once('response', (value) => { responseHeaders = value })
+      stream.on('data', () => {})
+      stream.once('error', reject)
+      stream.once('end', () => {
+        try {
+          assert.ok(responseHeaders, 'Rate probe response headers missing')
+          const response = new Response(null, {
+            status: Number(responseHeaders[':status']),
+            headers: Object.fromEntries(Object.entries(responseHeaders).filter(([key]) => !key.startsWith(':'))),
+          })
+          securityHeaders(response)
+          resolve(response)
+        } catch (error) { reject(error) }
+      })
+      stream.end(ping)
+    })
   }
-  assert.ok(limited, 'No 429 observed within 30 requests; counters are eventually consistent, investigate without increasing load')
-  pass('rate limit and Retry-After')
+  try {
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(() => session.destroy(new Error('Rate probe connection timed out')), 15_000)
+      session.once('connect', () => { clearTimeout(timer); resolve() })
+      session.once('error', (error) => { clearTimeout(timer); reject(error) })
+    })
+    for (let batch = 0; batch < 10 && !limited; batch++) {
+      const responses = await Promise.all(Array.from({ length: 3 }, probePing))
+      for (const response of responses) {
+        const location = response.headers.get('cf-ray')?.split('-').at(-1) ?? 'unknown'
+        locations.set(location, (locations.get(location) ?? 0) + 1)
+        if (response.status === 429) {
+          assert.equal(response.headers.get('retry-after'), '10')
+          limited = true
+        } else {
+          assert.equal(response.status, 200, 'rate probe ping')
+        }
+      }
+      if (!limited) await pause(100)
+    }
+  } finally {
+    session.destroy()
+  }
+  rateProbe = { requests: sent, elapsedMs: Math.round(performance.now() - started), locations: Object.fromEntries(locations), maxConcurrent: 3, transport: 'single HTTP/2 connection' }
+  rateLimit = limited ? `429 observed within ${sent} probe requests` : 'not observed within bounded probe'
+  console.log(JSON.stringify({ rateLimit, rateProbe }))
+  if (limited) pass('rate limit and Retry-After')
   await pause(11_000)
-  await check('recovery after rate window', 200, { method: 'POST', headers, body: ping })
+  await check(limited ? 'recovery after rate window' : 'availability after probe', 200, { method: 'POST', headers, body: ping })
+  assert.ok(limited, 'No 429 observed within 30 requests; counters are eventually consistent, investigate without increasing load')
 }
-console.log(JSON.stringify({ timestamp: new Date().toISOString(), endpoint: endpoint.href, version, requests, passed, rateLimit }, null, 2))
+console.log(JSON.stringify({ timestamp: new Date().toISOString(), endpoint: endpoint.href, version, requests, passed, rateLimit, rateProbe }, null, 2))
