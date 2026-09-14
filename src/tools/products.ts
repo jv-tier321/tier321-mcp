@@ -8,10 +8,12 @@ export function registerProductTools(server: McpServer): void {
   server.registerTool(
     'list_products',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: "List the organization's product portfolio. Optional status filter.",
       inputSchema: {
         status: z
           .array(StatusEnum)
+          .max(4)
           .optional()
           .describe('Filter by lifecycle status (e.g., ["shipped"])'),
       },
@@ -29,9 +31,10 @@ export function registerProductTools(server: McpServer): void {
   server.registerTool(
     'get_product',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: 'Get full detail for a single product by id.',
       inputSchema: {
-        id: z.string().describe('Product id, e.g. "alpha-platform"'),
+        id: z.string().min(1).max(128).describe('Product id, e.g. "alpha-platform"'),
       },
     },
     async ({ id }) => {

@@ -68,7 +68,7 @@ describe('MCP server transport', () => {
       }),
     })
     expect(res.status).toBe(200)
-    expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull()
   })
 })
 
@@ -76,20 +76,20 @@ describe('CORS', () => {
   it('responds to OPTIONS preflight with 204', async () => {
     const res = await SELF.fetch('http://example.com/mcp', { method: 'OPTIONS' })
     expect(res.status).toBe(204)
-    expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull()
   })
 
   it('returns 405 for GET /mcp', async () => {
     const res = await SELF.fetch('http://example.com/mcp', { method: 'GET' })
     expect(res.status).toBe(405)
-    expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull()
     expect(res.headers.get('Allow')).toBe('POST, OPTIONS')
   })
 
   it('returns 404 for non-/mcp paths with CORS headers', async () => {
     const res = await SELF.fetch('http://example.com/other', { method: 'POST' })
     expect(res.status).toBe(404)
-    expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull()
   })
 })
 
@@ -119,7 +119,7 @@ describe('Rate limiting', () => {
     expect(statuses.filter((s) => s === 200).length).toBeGreaterThan(0)
     const limited = responses.find((r) => r.status === 429)
     expect(limited).toBeDefined()
-    expect(limited!.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    expect(limited!.headers.get('Access-Control-Allow-Origin')).toBeNull()
     expect(limited!.headers.get('Retry-After')).toBe('10')
     const envelope = (await limited!.json()) as {
       jsonrpc: string

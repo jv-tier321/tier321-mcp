@@ -1,3 +1,4 @@
+import { version } from '../package.json'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { CfWorkerJsonSchemaValidator } from '@modelcontextprotocol/sdk/validation/cfworker'
 import { registerBlogTools } from './tools/blog.js'
@@ -11,7 +12,7 @@ export function createServer(): McpServer {
   const server = new McpServer(
     {
       name: 'tier321-mcp-server',
-      version: '0.1.0',
+      version,
     },
     {
       // Workers-compatible JSON Schema validator — the default AjvJsonSchemaValidator

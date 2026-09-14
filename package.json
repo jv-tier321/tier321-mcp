@@ -1,6 +1,6 @@
 {
   "name": "@tier321/mcp-server",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,19 +10,31 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
-    "verify:parity": "tsx scripts/verify-parity.ts"
+    "verify:parity": "tsx scripts/verify-parity.ts",
+    "build": "wrangler deploy --dry-run --outdir=dist",
+    "types": "wrangler types src/worker-configuration.d.ts --include-runtime=false --strict-vars=false",
+    "check": "npm run typecheck && npm test && npm run verify:parity && npm run build",
+    "audit": "npm audit --audit-level=low",
+    "verify:release": "node scripts/verify-release.mjs",
+    "package:release": "node scripts/package-release.mjs"
   },
   "dependencies": {
-    "@cfworker/json-schema": "^4.1.1",
-    "@modelcontextprotocol/sdk": "^1.4.0",
-    "zod": "^4.3.6"
+    "@cfworker/json-schema": "4.1.1",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.6.5"
   },
   "devDependencies": {
-    "@cloudflare/vitest-pool-workers": "^0.14.7",
-    "@cloudflare/workers-types": "^4.20250101.0",
-    "tsx": "^4.19.2",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.4",
-    "wrangler": "^4.83.0"
+    "@cloudflare/vitest-pool-workers": "0.22.0",
+    "@cloudflare/workers-types": "5.20260914.1",
+    "tsx": "4.23.13",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11",
+    "wrangler": "4.131.2"
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
+  "overrides": {
+    "sharp": "0.35.4"
   }
 }

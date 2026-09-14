@@ -5,6 +5,7 @@ export function registerIndustryTools(server: McpServer): void {
   server.registerTool(
     'list_industries',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: 'List the industries the organization builds platforms for.',
       // no inputSchema — zero-arg tool (SDK convention)
     },

@@ -18,6 +18,7 @@ async function callTool(
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json, text/event-stream',
+      'CF-Connecting-IP': `198.51.100.${nextId}`,
     },
     body: JSON.stringify({
       jsonrpc: '2.0',

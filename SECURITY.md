@@ -40,12 +40,12 @@ Ninety (90) days from the acknowledged report to public disclosure, shortened or
 Any of:
 
 - Remote code execution
-- Authentication or authorization bypass (when OAuth write tools ship)
+- Authentication or authorization bypass in any future authenticated capability
 - Data leakage beyond what the read-only tools intentionally expose
 - Denial-of-service below the documented rate-limit threshold
 - Supply-chain attacks via package update
 
-Rate-limit evasion, brute-force tooling enumeration, and similar "by-design" behaviors of a public read-only endpoint are not vulnerabilities — they're the documented surface. Please don't report them.
+Anonymous enumeration of intentionally public tools is expected. Report per-request resource amplification, input-limit bypasses, or data exposure beyond the documented public content boundary. Cloudflare rate counters are eventually consistent per location, so the request-count threshold is not a global quota.
 
 ## Safe-harbor
 
@@ -55,3 +55,11 @@ Good-faith security research within the scope above is welcome. We will not purs
 - Only interact with accounts they own or have explicit permission to test against
 - Do not exploit issues beyond the minimum needed to demonstrate them
 - Report issues through the preferred or backup channel and give us a reasonable time to respond before public disclosure
+
+## Supported versions and controls
+
+The latest 0.2.x release is the supported security baseline; upgrade older 0.1.x deployments. This reference release remains anonymous and read-only. It rejects batches, bounds streamed bodies and tool arguments, requires explicit browser origins, and returns sanitized failures. See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for trust assumptions and [CHANGELOG.md](CHANGELOG.md) for migration details.
+
+Never place secrets or private customer content in bundled data: all tool results are public. Keep `.env*`, `.dev.vars*`, private keys and deployment credentials out of commits and artifacts. Authenticate deployment through an operator account or narrowly scoped token. No deployment credentials are required by CI or GitHub release jobs.
+
+Maintainers should keep dependency alerts and automated security PRs, secret scanning/push protection, private vulnerability reporting, required CI checks and CodeQL enabled. These GitHub settings are external to this repository and must be verified after forks or policy changes. Passing an advisory audit means no known matches at that time; it is not proof that software has no vulnerabilities.

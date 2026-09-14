@@ -2,8 +2,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tier321-mcp-server",
   "main": "src/index.ts",
-  "compatibility_date": "2026-04-17",
+  "compatibility_date": "2026-08-22",
   "compatibility_flags": ["nodejs_compat"],
+  "dev": { "ip": "127.0.0.1" },
+  "vars": { "MCP_ALLOWED_ORIGINS": "" },
   "observability": {
     "enabled": true
   },

@@ -7,7 +7,12 @@ dist/
 
 # Local environment
 .env
-.env.local
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
 
 # Logs
 *.log
@@ -22,3 +27,7 @@ npm-debug.log*
 # Coverage / test artifacts
 coverage/
 .nyc_output/
+
+# Release staging
+release/
+.release-staging/

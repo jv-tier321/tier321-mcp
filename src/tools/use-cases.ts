@@ -5,6 +5,7 @@ export function registerUseCaseTools(server: McpServer): void {
   server.registerTool(
     'list_use_cases',
     {
+      annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
       description: "List the organization's documented product capabilities and use cases.",
       // no inputSchema — zero-arg tool (SDK convention)
     },
