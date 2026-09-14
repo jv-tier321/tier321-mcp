@@ -44,6 +44,6 @@ body:
     id: actual
     attributes:
       label: Actual behavior
-      description: Include a sanitized error summary. Inspect any logs or screenshots for private information before attaching them.
+      description: Include a sanitized error summary. Inspect headers, request and response bodies, logs, screenshots, and tool outputs for private information before attaching them.
     validations:
       required: true
