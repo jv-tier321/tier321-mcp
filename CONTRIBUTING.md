@@ -19,7 +19,9 @@ Branch from main using a focused `fix/`, `feat/`, `chore/` or `docs/` branch. Us
 
 For a tool change, register it in `src/tools/`, wire it in `src/server.ts`, add behavior and input-boundary tests, and update the tools table and architecture. Keep annotations accurate; they are not access controls. Review every field and imported document as public. Do not introduce dynamic paths, external fetching, write operations or private records without a separate threat model.
 
-CI covers Node 22/24, type checks, Miniflare tests, shape checks, advisory checks and release metadata. The build check also packages the Worker. CodeQL checks PRs and main. Exact GitHub required-check settings are maintained separately from YAML.
+CI covers Node 22/24, type checks, Miniflare tests, shape checks, advisory checks and release metadata. The build check validates both default and staging bundles, checks the operator smoke script's syntax, and packages the Worker. CodeQL checks PRs and main. Exact GitHub required-check settings are maintained separately from YAML.
+
+Maintainer live deployments use the dedicated staging environment. Follow the [deployment runbook](docs/DEPLOYMENT.md), record the source and Worker versions, and run the bounded smoke checks only on your own staging target. The live script is operator-run and receives no CI deployment credentials.
 
 ## Releases
 

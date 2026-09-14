@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "deploy:staging": "wrangler deploy --env staging --strict",
+    "build:staging": "wrangler deploy --env staging --dry-run --outdir=dist-staging",
+    "smoke:staging": "node scripts/smoke-staging.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",

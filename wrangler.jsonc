@@ -36,5 +36,23 @@
         "period": 10
       }
     }
-  ]
+  ],
+  "env": {
+    "staging": {
+      "name": "tier321-mcp-staging",
+      "workers_dev": true,
+      "preview_urls": false,
+      "routes": [],
+      "vars": { "MCP_ALLOWED_ORIGINS": "" },
+      "ratelimits": [
+        {
+          "name": "MCP_RATE_LIMITER",
+          // Separate from the default environment's account-scoped counter.
+          // Fork operators must choose an unused namespace in their account.
+          "namespace_id": "32102001",
+          "simple": { "limit": 20, "period": 10 }
+        }
+      ]
+    }
+  }
 }
