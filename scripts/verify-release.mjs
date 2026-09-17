@@ -19,11 +19,13 @@ for (const expected of environments) {
   assert.equal(worker.workers_dev, true, 'Example access must be explicit')
   assert.equal(worker.preview_urls, false, 'Version preview URLs must remain disabled')
   assert.deepEqual(worker.routes, [], 'Public examples must not carry custom routes')
+  assert.equal(worker.observability.enabled, true, 'Cloudflare observability must remain enabled')
   assert.equal(worker.observability.redact_query_string, true, 'Request query strings must be redacted from telemetry')
   assert.equal(worker.ratelimits.length, 1, 'Expected one public example rate limiter')
   const limiter = worker.ratelimits[0]
   assert.equal(limiter.name, 'MCP_RATE_LIMITER')
   assert.equal(limiter.namespace_id, expected.namespace, 'Review the limiter namespace before release')
+  assert.deepEqual(limiter.simple, { limit: 20, period: 10 }, 'Rate limiter must match the documented 20 requests per 10 seconds')
   assert.ok(!names.has(worker.name), 'Worker environments must use distinct names')
   assert.ok(!namespaces.has(limiter.namespace_id), 'Worker environments must use distinct limiter namespaces')
   names.add(worker.name)
