@@ -17,7 +17,9 @@ The `staging` environment deploys the public reference server to a dedicated **`
 
 The explicit environment repeats `vars` and the limiter binding because these settings are not inherited. Fork operators must choose their own account, unique Worker name and unused limiter namespace. See Cloudflare's [environment configuration](https://developers.cloudflare.com/workers/wrangler/environments/) and [preview URL settings](https://developers.cloudflare.com/workers/versions-and-deployments/preview-urls/).
 
-Cloudflare observability is enabled and may retain platform request metadata. The application never intentionally logs request bodies or exception details. All returned catalog content is public; review bundled data before every deployment. Empty CORS configuration does not make the service private.
+The default environment is a separate public example: Worker `tier321-mcp-example`, limiter namespace `32102000`, `workers_dev: true`, `preview_urls: false`, and no custom routes. `npm run verify:release` checks both example identities, their distinct limiter namespaces and these exposure settings before packaging. Forks must review and update those assertions with their own configuration. A local check cannot establish that an example name or namespace is unused in an operator's account.
+
+Cloudflare observability is enabled with request query strings redacted from logs and traces; other platform request metadata may be retained. The application never intentionally logs request bodies or exception details. All returned catalog content is public; review bundled data before every deployment. Empty CORS configuration does not make the service private.
 
 ## Deploy
 
@@ -35,7 +37,7 @@ npx wrangler deployments list --env staging
 npm run deploy:staging
 ```
 
-For the first deployment, the deployment-list command reports that the Worker does not exist. Confirm the selected account and the exact staging name before continuing. On later deployments, record the existing active version for rollback. `deploy:staging` passes `--env staging --strict`; review any remote-change conflict before retrying. Do not substitute the bare `npm run deploy`, which targets the default environment and may update an existing Worker.
+For the first deployment, the deployment-list command reports that the Worker does not exist. Confirm the selected account and the exact staging name before continuing. On later deployments, record the existing active version for rollback. `deploy:staging` passes `--env staging --strict`; review any remote-change conflict before retrying. Do not substitute the bare `npm run deploy`, which targets `tier321-mcp-example` by default and may update an existing Worker with that name.
 
 The staging environment is recorded in `wrangler.jsonc`; no production route is attached. GitHub CI and release workflows perform validation and publishing only. They do not deploy to Cloudflare or hold deployment credentials.
 

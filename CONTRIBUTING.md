@@ -6,7 +6,7 @@ Use a current patched Node 22 or 24 release. Clone the repository and install th
 npm run types             # after editing Worker configuration
 npm run check             # types, tests, data shape and dry-run build
 npm run audit             # all dependency severities
-npm run verify:release    # package, lockfile and changelog consistency
+npm run verify:release    # deployment isolation and release metadata
 npm run package:release   # inspect the checksummed local bundle
 npm run dev               # loopback-only local endpoint
 ```

@@ -69,10 +69,12 @@ The dedicated `tier321-mcp-staging` Worker runs this public example server for l
 
 ## Customize and deploy your own instance
 
+The default build and deploy commands explicitly select `tier321-mcp-example` with limiter namespace `32102000`. Deployment uses `--strict` to surface remote configuration conflicts. This example enables the Worker-specific `workers.dev` address, disables version preview URLs, and has no custom routes. The named staging environment uses a separate identity and namespace. These are public example defaults; verify both are unused in your account before deploying.
+
 1. Replace the fictional catalogs in `src/data/`, company/contact constants in `src/tools/`, and explicit blog imports in `src/lib/blog-loader.ts`. Review all returned fields for public suitability.
 2. Keep data shapes consistent. `verify:parity` is a local shape/count check, not synchronization with another repository. Update its fixture and tests when changing counts.
-3. Set a unique Worker name and rate-limit namespace in `wrangler.jsonc`. Add your custom domain if needed, and configure approved browser origins.
-4. Run `npm run types`, `npm run check`, and `npm run audit`.
+3. Set a unique Worker name and rate-limit namespace in `wrangler.jsonc`. Add your custom domain if needed, and configure approved browser origins. Review and update the matching deployment assertions in `scripts/verify-release.mjs` for your fork.
+4. Run `npm run types`, `npm run check`, `npm run audit`, and `npm run verify:release`.
 5. Authenticate with `npx wrangler login` using your own Cloudflare account, then run `npm run deploy`. For noninteractive deployment, use a narrowly scoped token in your secret manager/environment. Never put a token into source or Worker variables.
 
 GitHub CI and release jobs do not receive Cloudflare credentials or deploy a Worker. Release assets contain the dry-run bundle, placeholder data, licenses and version, with SHA-256 checksums; source maps are excluded. See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and release instructions.
