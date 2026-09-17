@@ -1,4 +1,4 @@
-![tier321-mcp banner](docs/brand/banner.png)
+![TIER 321 MCP reference server: eight read-only tools on Cloudflare Workers, using fictional Example Corp data.](docs/brand/banner.png)
 
 # tier321-mcp
 
