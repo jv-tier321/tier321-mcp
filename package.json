@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "deploy": "wrangler deploy --env \"\" --strict",
     "deploy:staging": "wrangler deploy --env staging --strict",
     "build:staging": "wrangler deploy --env staging --dry-run --outdir=dist-staging",
     "smoke:staging": "node scripts/smoke-staging.mjs",
@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "tsc --noEmit",
     "verify:parity": "tsx scripts/verify-parity.ts",
-    "build": "wrangler deploy --dry-run --outdir=dist",
+    "build": "wrangler deploy --env \"\" --dry-run --outdir=dist",
     "types": "wrangler types src/worker-configuration.d.ts --include-runtime=false --strict-vars=false",
     "check": "npm run typecheck && npm test && npm run verify:parity && npm run build",
     "audit": "npm audit --audit-level=low",
@@ -28,11 +28,11 @@
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "0.22.0",
-    "@cloudflare/workers-types": "5.20260914.1",
+    "@cloudflare/workers-types": "5.20260917.1",
     "tsx": "4.23.13",
     "typescript": "7.0.2",
     "vitest": "4.1.11",
-    "wrangler": "4.131.2"
+    "wrangler": "4.134.0"
   },
   "engines": {
     "node": "^22.0.0 || ^24.0.0"

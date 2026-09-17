@@ -1,13 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "tier321-mcp-server",
+  "name": "tier321-mcp-example",
+  "workers_dev": true,
+  "preview_urls": false,
+  "routes": [],
   "main": "src/index.ts",
   "compatibility_date": "2026-08-22",
   "compatibility_flags": ["nodejs_compat"],
   "dev": { "ip": "127.0.0.1" },
   "vars": { "MCP_ALLOWED_ORIGINS": "" },
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "redact_query_string": true
   },
   "rules": [
     {
@@ -16,12 +20,8 @@
       "fallthrough": true
     }
   ],
-  // Replace with your deployment domain. Leave this commented out (or
-  // remove the block entirely) to deploy to the default <worker>.workers.dev
-  // subdomain for testing.
-  // "routes": [
-  //   { "pattern": "mcp.example.com", "custom_domain": true }
-  // ],
+  // For a custom domain, replace the empty routes array above with:
+  // [{ "pattern": "mcp.example.com", "custom_domain": true }]
   "alias": {
     "ajv": "./test/__stubs__/ajv.js",
     "ajv-formats": "./test/__stubs__/ajv-formats.js"
@@ -30,7 +30,7 @@
     {
       "name": "MCP_RATE_LIMITER",
       // Any unused integer for your account — namespace IDs are account-scoped
-      "namespace_id": "1001",
+      "namespace_id": "32102000",
       "simple": {
         "limit": 20,
         "period": 10

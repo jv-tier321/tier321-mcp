@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Use an explicit `tier321-mcp-example` default deployment with its own limiter namespace, no custom routes and disabled version preview URLs. Release checks guard the default and staging identities, namespaces and exposure settings; forks must review these assertions when customizing deployment.
+- Redact request query strings in Cloudflare observability, update Wrangler and Workers types, and defer Dependabot's Vitest major updates until the Cloudflare test pool supports them.
 - Refresh the README banner and repository social-preview artwork with the Original Triad identity while retaining the fictional-data reference-server scope.
 
 ## [0.2.0] - 2026-09-14

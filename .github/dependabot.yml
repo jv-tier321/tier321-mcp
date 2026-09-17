@@ -8,6 +8,10 @@ updates:
       time: '09:00'
       timezone: 'America/New_York'
     open-pull-requests-limit: 5
+    # Remove when @cloudflare/vitest-pool-workers supports Vitest 5.
+    ignore:
+      - dependency-name: vitest
+        update-types: ['version-update:semver-major']
     groups:
       minor-and-patch:
         patterns: ['*']

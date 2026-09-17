@@ -38,7 +38,7 @@ The limiter counts `POST /mcp` requests that pass Origin, route and method check
 
 CORS is not authorization. Explicit Origin checks prevent arbitrary browser-origin use of a locally running instance. Native callers without Origin remain supported because this catalog is intentionally public. Bind local development only to loopback. Do not add private data or write operations without an authenticated, scoped authorization design and new tests.
 
-Rate counters are eventually consistent and local to a Cloudflare location. They do not guarantee a global spending cap or protection against all distributed traffic. Operators must choose platform CPU/billing controls appropriate to their deployment. Public error bodies are generic; the application logs only a fixed unexpected-error event. Cloudflare may retain platform request metadata under the operator's observability settings.
+Rate counters are eventually consistent and local to a Cloudflare location. They do not guarantee a global spending cap or protection against all distributed traffic. Operators must choose platform CPU/billing controls appropriate to their deployment. Public error bodies are generic; the application logs only a fixed unexpected-error event. Cloudflare observability redacts request query strings from logs and traces; other platform request metadata may be retained.
 
 ## Build and release trust
 
@@ -52,7 +52,7 @@ A separate publish job downloads the artifact from that run, verifies its checks
 
 The compatibility date is 2026-08-22, the newest date supported by the current Cloudflare test-pool runtime. This keeps tests and the configured behavior aligned.
 
-Runtime: MCP SDK 1.30.0, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.11 because Cloudflare pool 0.22.0 declares a Vitest 4 peer requirement. Sharp 0.35.4 is explicitly overridden to remediate the pool's older transitive development dependency; remove the override when upstream resolves to a patched version. No image-processing tool is exposed by the Worker.
+Runtime: MCP SDK 1.30.0, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.11 because Cloudflare pool 0.22.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.4 is explicitly overridden to remediate the pool's older transitive development dependency; remove the override when upstream resolves to a patched version. No image-processing tool is exposed by the Worker.
 
 ## Validation scope
 
