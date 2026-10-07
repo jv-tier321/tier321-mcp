@@ -52,7 +52,7 @@ A separate publish job downloads the artifact from that run, verifies its checks
 
 The compatibility date is 2026-08-22, the newest date supported by the current Cloudflare test-pool runtime. This keeps tests and the configured behavior aligned.
 
-Runtime: MCP SDK 1.30.0, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.11 because Cloudflare pool 0.22.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.4 is explicitly overridden to remediate the pool's older transitive development dependency; remove the override when upstream resolves to a patched version. No image-processing tool is exposed by the Worker.
+Runtime: MCP SDK 1.32.1, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.11 because Cloudflare pool 0.22.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.5 is explicitly overridden to remediate the tooling's older transitive development dependency, and an Undici 7.29.1 override is scoped to Miniflare. Remove each override when all upstream paths resolve to patched versions, then rerun the audit, tests and builds. No image-processing tool is exposed by the Worker.
 
 ## Validation scope
 

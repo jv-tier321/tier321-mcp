@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Security
+
+- Update the MCP SDK to 1.32.1 and refresh the locked `fast-uri`, `ip-address`, `proxy-addr` and `source-map-js` dependencies to patched versions. Update the Sharp override to 0.35.5 and scope an Undici 7.29.1 override to Miniflare while upstream tooling retains older pins.
+
 ### Changed
 
 - Use an explicit `tier321-mcp-example` default deployment with its own limiter namespace, no custom routes and disabled version preview URLs. Release checks guard the default and staging identities, namespaces and exposure settings; forks must review these assertions when customizing deployment.
