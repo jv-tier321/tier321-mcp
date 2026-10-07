@@ -10,6 +10,8 @@ A public reference [Model Context Protocol](https://modelcontextprotocol.io/) se
 
 This is TIER 321's runnable MCP proof of concept. It demonstrates tool discovery, catalog lookups, input controls and reproducible deployment without access to private TIER 321 systems. Follow the [public POC and publication boundary](docs/PUBLIC_POC.md) when contributing content, configuration, test evidence or new capabilities.
 
+Jamel Virgil, CISSP, founder of TIER 321 LLC, maintains this repository's security through his GitHub account [jv-tier321](https://github.com/jv-tier321). See [Security maintainer](SECURITY.md#security-maintainer) for his responsibilities and the repository's security policy.
+
 ## Quickstart
 
 Use a current patched Node **22 or 24** release. A Cloudflare account is unnecessary for local tests.

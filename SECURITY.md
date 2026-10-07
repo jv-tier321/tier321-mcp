@@ -1,5 +1,11 @@
 # Security Policy
 
+## Security maintainer
+
+Jamel Virgil, CISSP, founder of TIER 321 LLC, is the security maintainer of `tier321-mcp`. His GitHub account is [jv-tier321](https://github.com/jv-tier321).
+
+He is responsible for vulnerability triage, coordinated disclosure with reporters, security reviews, dependency remediation, and patch validation using the repository's required checks. These responsibilities apply to this public reference implementation within the [scope](#scope) below.
+
 ## Reporting a vulnerability
 
 **Preferred channel — GitHub Private Vulnerability Reporting:**
