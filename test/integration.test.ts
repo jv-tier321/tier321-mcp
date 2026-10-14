@@ -94,10 +94,16 @@ describe('CORS', () => {
 })
 
 describe('Rate limiting', () => {
+  // The real binding uses wall-clock-aligned 10-second windows. A test can
+  // straddle a rollover, allowing 20 requests in each of two windows. Keep
+  // these tests below one window in duration and exceed both budgets.
+  const maxRequests = 2 * 20 + 1
+  const timeoutMs = 5_000
+
   it('returns 429 with JSON-RPC envelope when an IP exceeds 20 req / 10s', async () => {
     const ip = '203.0.113.42' // TEST-NET-3 docs IP so we never collide with real test traffic
     const responses: Response[] = []
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < maxRequests; i++) {
       const res = await SELF.fetch('http://example.com/mcp', {
         method: 'POST',
         headers: {
@@ -113,6 +119,7 @@ describe('Rate limiting', () => {
         }),
       })
       responses.push(res)
+      if (res.status === 429) break
     }
 
     const statuses = responses.map((r) => r.status)
@@ -130,7 +137,7 @@ describe('Rate limiting', () => {
     expect(envelope.id).toBeNull()
     expect(envelope.error.code).toBe(-32000)
     expect(envelope.error.message.toLowerCase()).toContain('rate limit')
-  })
+  }, timeoutMs)
 
   it('does not rate-limit different IPs against each other', async () => {
     const ipA = '203.0.113.10'
@@ -153,9 +160,11 @@ describe('Rate limiting', () => {
       return res.status
     }
 
-    // Burn through A's budget
-    for (let i = 0; i < 21; i++) await hit(ipA)
+    // Prove A is limited before checking that B has an independent budget.
+    let statusA = 200
+    for (let i = 0; i < maxRequests && statusA !== 429; i++) statusA = await hit(ipA)
+    expect(statusA).toBe(429)
     // B should still be clean
     expect(await hit(ipB)).toBe(200)
-  })
+  }, timeoutMs)
 })
