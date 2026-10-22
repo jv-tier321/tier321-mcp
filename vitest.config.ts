@@ -1,13 +1,15 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { cloudflareTest } from '@cloudflare/vitest-pool-workers'
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 // package.json declares "type": "module", so __dirname is not defined.
 // Derive the config-file directory from import.meta.url for ESM safety.
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
+  // Release scripts use Node's runner; they must not execute in the Worker pool.
+  test: { exclude: [...configDefaults.exclude, 'scripts/**'] },
   plugins: [
     cloudflareTest({
       wrangler: { configPath: './wrangler.jsonc' },

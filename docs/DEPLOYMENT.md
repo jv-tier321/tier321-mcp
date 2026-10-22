@@ -23,7 +23,7 @@ Cloudflare observability is enabled with request query strings redacted from log
 
 ## Deploy
 
-Use patched Node 22 or 24 and the committed lockfile. Authenticate using operator OAuth (`npx wrangler login`) or a narrowly scoped token from your secret manager. Never place deployment credentials into source, Worker variables, terminal arguments or public evidence.
+Use Node 22.23.4+ or 24.22.1+ and the committed lockfile. Authenticate using operator OAuth (`npx wrangler login`) or a narrowly scoped token from your secret manager. Never place deployment credentials into source, Worker variables, terminal arguments or public evidence.
 
 ```sh
 npm ci --ignore-scripts

@@ -14,7 +14,7 @@ Jamel Virgil, CISSP, founder of TIER 321 LLC, maintains this repository's securi
 
 ## Quickstart
 
-Use a current patched Node **22 or 24** release. A Cloudflare account is unnecessary for local tests.
+Use Node **22.23.4+ or 24.22.1+** within those supported major lines. A Cloudflare account is unnecessary for local tests.
 
 ```sh
 git clone https://github.com/jv-tier321/tier321-mcp.git
@@ -80,6 +80,10 @@ The default build and deploy commands explicitly select `tier321-mcp-example` wi
 5. Authenticate with `npx wrangler login` using your own Cloudflare account, then run `npm run deploy`. For noninteractive deployment, use a narrowly scoped token in your secret manager/environment. Never put a token into source or Worker variables.
 
 GitHub CI and release jobs do not receive Cloudflare credentials or deploy a Worker. Release assets contain the dry-run bundle, placeholder data, licenses and version, with SHA-256 checksums; source maps are excluded. See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and release instructions.
+
+A reviewed package-version bump on main automatically creates its immutable version tag and
+publishes the tested bundle. The tag and release identify the tested commit; deployment and
+live staging checks remain separate operator steps.
 
 ## License
 

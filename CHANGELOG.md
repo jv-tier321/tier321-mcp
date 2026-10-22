@@ -6,11 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-22
+
 ### Security
+
+- Require Node 22.23.4 or 24.22.1 and pin CI/release execution to these patched versions. Update Vitest and its mocker packages to 4.1.12, Vite to 8.3.4, and Hono to 4.13.13. These address known dependency advisories; the public Worker does not configure the affected development-server or Hono static-serving features.
 
 - Update the MCP SDK to 1.32.1 and refresh the locked `fast-uri`, `ip-address`, `proxy-addr` and `source-map-js` dependencies to patched versions. Update the Sharp override to 0.35.5 and scope an Undici 7.29.1 override to Miniflare while upstream tooling retains older pins.
 
 ### Changed
+
+- Automatically create the immutable version tag and publish the tested reference bundle after a reviewed package-version bump on main. Tag pushes and main dispatch remain recovery paths; publication stays separate from the read-only build and performs no Cloudflare deployment.
 
 - Use an explicit `tier321-mcp-example` default deployment with its own limiter namespace, no custom routes and disabled version preview URLs. Release checks guard the default and staging identities, namespaces and exposure settings; forks must review these assertions when customizing deployment.
 - Redact request query strings in Cloudflare observability, update Wrangler and Workers types, and defer Dependabot's Vitest major updates until the Cloudflare test pool supports them.
