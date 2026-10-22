@@ -1,6 +1,6 @@
 # Architecture and security boundaries
 
-This describes public reference version 0.2.1. The separately operated `mcp.tier321.com` service is outside this repository's release and validation scope. The diagram and contracts below describe the current implementation.
+This describes public reference version 0.2.2. The separately operated `mcp.tier321.com` service is outside this repository's release and validation scope. The diagram and contracts below describe the current implementation.
 
 The [public POC boundary](PUBLIC_POC.md) defines what may be published and how the demonstration stays separate from private TIER 321 systems. Catalog descriptions are fictional examples; they do not confer the integrations or permissions they describe. Public architecture documents cover this reference implementation and omit account-specific deployment records.
 
@@ -52,7 +52,7 @@ A separate publish job, serialized by version, downloads the artifact from that 
 
 The compatibility date is 2026-08-22, the newest date supported by the current Cloudflare test-pool runtime. This keeps tests and the configured behavior aligned.
 
-Runtime: MCP SDK 1.32.1, Zod 4.6.5 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.12 because Cloudflare pool 0.23.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.5 is explicitly overridden to remediate the tooling's older transitive development dependency, and an Undici 7.29.1 override is scoped to Miniflare. Remove each override when all upstream paths resolve to patched versions, then rerun the audit, tests and builds. No image-processing tool is exposed by the Worker.
+Runtime: MCP SDK 1.32.1, Zod 4.6.7 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.12 because Cloudflare pool 0.23.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.5 is explicitly overridden to remediate the tooling's older transitive development dependency, and an Undici 7.29.1 override is scoped to Miniflare. Remove each override when all upstream paths resolve to patched versions, then rerun the audit, tests and builds. No image-processing tool is exposed by the Worker.
 
 ## Validation scope
 
