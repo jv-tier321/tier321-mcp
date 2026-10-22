@@ -88,6 +88,10 @@ jobs:
           import assert from 'node:assert/strict';
           import { appendFileSync } from 'node:fs';
           // BEGIN TESTED PUBLICATION GUARD
+          /**
+           * Ensure the immutable tag identifies the tested commit, creating it if absent.
+           * Return true only for an already complete release; reject conflicts and partial publication.
+           */
           async function ensureTag(api, tag, sha) {
             assert.match(tag, /^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/);
             assert.match(sha, /^[0-9a-f]{40}$/);

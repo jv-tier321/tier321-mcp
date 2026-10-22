@@ -3,6 +3,10 @@ import { appendFileSync, readFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
 
+/**
+ * Select a release for a main version change, explicit retry, or matching tag.
+ * Reject malformed versions, commits, and refs before emitting workflow outputs.
+ */
 export function releasePlan({ ref, version, previousVersion, sha, dispatch = false }) {
   assert.match(sha, /^[0-9a-f]{40}$/)
   assert.match(version, /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/)
