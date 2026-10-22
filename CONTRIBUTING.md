@@ -1,9 +1,10 @@
 # Contributing
 
-Use a current patched Node 22 or 24 release. Clone the repository and install the locked dependencies with `npm ci --ignore-scripts`. CI does not need Cloudflare credentials. Run:
+Use Node 22.23.4 or newer in the 22 line, or 24.22.1 or newer in the 24 line. Clone the repository and install the locked dependencies with `npm ci --ignore-scripts`. CI does not need Cloudflare credentials. Run:
 
 ```sh
 npm run types             # after editing Worker configuration
+node --test scripts/*.test.mjs # automatic release decisions and publication guards
 npm run check             # types, tests, data shape and dry-run build
 npm run audit             # all dependency severities
 npm run verify:release    # deployment isolation and release metadata
@@ -30,8 +31,10 @@ Maintainer live deployments use the dedicated staging environment. Follow the [d
 1. Update `package.json` version and regenerate `package-lock.json`; `src/server.ts` reads that version directly.
 2. Add the matching dated changelog section, including migration changes and dependency exceptions.
 3. Run all checks above, inspect the archive and its public content, and merge the reviewed PR with green required checks.
-4. Tag the reviewed main commit with `vX.Y.Z` and push that tag. Never move a published tag.
+4. The main-push release workflow detects the version change, tests the exact commit, and automatically creates `vX.Y.Z` and publishes the release. Never move a published tag.
 5. Confirm the release workflow succeeds and verify the release tag, assets and checksums. It performs a read-only build/test job and publishes in a separate job with repository write permission.
+
+For recovery, dispatch Release from main or push a matching version tag on an already-reviewed main commit. A tag must resolve to the tested commit. Existing complete releases are preserved; incomplete publication fails for inspection instead of overwriting assets. A rerun may build a different archive hash because tar metadata is time-dependent; the existing published assets remain authoritative. Verify their own checksums. No tag is created for an unchanged-version main push.
 
 GitHub Release assets are a reference Worker bundle, not an npm publication or Cloudflare deployment. The package remains private to prevent accidental npm publication. Deploy forks manually with a scoped operator account after configuring their own name, domain, origin allowlist and rate-limit namespace. Keep rollback tags available; do not revert security controls without reviewing the risk.
 

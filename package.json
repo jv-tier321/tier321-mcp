@@ -1,6 +1,6 @@
 {
   "name": "@tier321/mcp-server",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -31,11 +31,11 @@
     "@cloudflare/workers-types": "5.20261010.1",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vitest": "4.1.11",
+    "vitest": "4.1.12",
     "wrangler": "4.149.0"
   },
   "engines": {
-    "node": "^22.0.0 || ^24.0.0"
+    "node": ">=22.23.4 <23 || >=24.22.1 <25"
   },
   "overrides": {
     "sharp": "0.35.5",
