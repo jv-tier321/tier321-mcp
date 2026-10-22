@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-22
+
+### Changed
+
+- Update Zod to 4.6.7, Wrangler to 4.151.2 and Workers types to 5.20261019.1 while retaining the supported test pool, patched Node versions and security overrides.
+- Update the pinned setup-node, download-artifact and CodeQL Actions. Preserve read-only CI permissions, separate release publication and immutable version tags.
+
 ## [0.2.1] - 2026-10-22
 
 ### Security
