@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Security
 
-- Resolve all open dependency advisories (`npm audit` reports 0). Scope Undici 7.30.2 to Miniflare and Zod 4.6.7 to the Cloudflare test pool, and refresh the MCP SDK's transitive body-parser (2.4.0), `@hono/node-server` (2.1.6), fast-uri (3.1.9), ip-address (10.7.6) and qs (6.17.1). The Worker does not use the SDK's Express or Node server paths; the Undici and pool Zod copies are development tooling only.
+- Resolve all open dependency advisories (`npm audit` reports 0). Scope Undici 7.30.2 to Miniflare and Zod 4.6.7 to the Cloudflare test pool, and refresh the MCP SDK's transitive body-parser (2.4.0), `@hono/node-server` (2.1.6), fast-uri (3.1.9), ip-address (10.7.6) and qs (6.17.1). Each override's scope, advisories and removal condition are recorded in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#dependency-overrides).
 
 ## [0.2.2] - 2026-10-22
 

@@ -52,7 +52,21 @@ A separate publish job, serialized by version, downloads the artifact from that 
 
 The compatibility date is 2026-08-22, the newest date supported by the current Cloudflare test-pool runtime. This keeps tests and the configured behavior aligned.
 
-Runtime: MCP SDK 1.32.1, Zod 4.6.7 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.12 because Cloudflare pool 0.23.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Sharp 0.35.5 is explicitly overridden to remediate the tooling's older transitive development dependency, an Undici 7.30.2 override is scoped to Miniflare, and Zod 4.6.7 is scoped to the Cloudflare test pool, which otherwise pins a vulnerable Zod 4.4.3. Remove each override when all upstream paths resolve to patched versions, then rerun the audit, tests and builds. No image-processing tool is exposed by the Worker.
+Runtime: MCP SDK 1.32.1, Zod 4.6.7 and CfWorker JSON Schema 4.1.1. Development dependencies are pinned with an integrity-locked install. Vitest remains on 4.1.12 because Cloudflare pool 0.23.0 declares a Vitest 4 peer requirement. Dependabot major-version updates for Vitest are temporarily ignored; remove that rule when the pool supports Vitest 5 and validate the upgrade together. Three security overrides are in force; see [dependency overrides](#dependency-overrides). No image-processing tool is exposed by the Worker.
+
+### Dependency overrides
+
+`package.json` `overrides` force a patched version onto a transitive dependency when its parent package pins or permits a vulnerable one. Each entry is a security pin, not a preference. Scope an override to its parent wherever possible so unrelated paths keep their normal resolution.
+
+| Override | Scope | Pinned to | Reason | Remove when |
+|---|---|---|---|---|
+| `sharp` | Global | 0.35.5 | Older transitive development dependency of the Wrangler/Miniflare tooling. | Every tooling path resolves `sharp` 0.35.5 or later on its own. |
+| `undici` | `miniflare` only | 7.30.2 | Miniflare (through Wrangler and the test pool) pins an Undici 7.x release affected by GHSA-4qv8-2p9j-2685, GHSA-f72v-6w45-q472, GHSA-xjj6-f33q-929c, GHSA-4w7w-5xrc-9h26, GHSA-2m5v-pch6-74hx, GHSA-qrxm-fqhp-jwvm, GHSA-9fm3-97px-rjf6 and GHSA-55wc-3pg8-jfw6. Development and test tooling only; the Worker uses the platform `fetch`. | The Miniflare versions bundled by both Wrangler and `@cloudflare/vitest-pool-workers` depend on Undici 7.30.1 or later. |
+| `zod` | `@cloudflare/vitest-pool-workers` only | 4.6.7 | The test pool pins Zod 4.4.3, affected by GHSA-mrhx-c7xc-m3w5. The override aligns it with the runtime's own Zod 4.6.7. Test tooling only. | The installed pool release depends on Zod 4.6.6 or later. |
+
+The MCP SDK's transitive `body-parser`, `@hono/node-server`, `fast-uri`, `ip-address` and `qs` advisories (GHSA-27r3-jxmh-p828, GHSA-rmxm-3fg6-px4f, GHSA-w74x-v6f9-j3xg, GHSA-xhq7-xmqj-769h, GHSA-wjr9-j795-jxcr, GHSA-333x-w4r6-6crp, GHSA-rxp7-6hxx-x8q5 and GHSA-6pq8-jhm2-2vcw) are resolved in the lockfile within the SDK's declared ranges, so they need no override. The Worker imports only the SDK's `McpServer`, Web-standard Streamable HTTP transport and CfWorker validator, not its Express or Node server entry points.
+
+To change or remove an override: update `package.json`, run `npm install` to regenerate the lockfile, then confirm `npm ls <package>` shows the intended version on every path and `npm run audit`, `npm run check` and `npm run verify:release` pass. npm rejects an override that conflicts with a direct dependency specification (`EOVERRIDE`), so keep any direct entry for the same package compatible with it.
 
 ## Validation scope
 
