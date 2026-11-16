@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Security
+
+- Update the MCP SDK's transitive Hono dependency to 4.13.18, resolving GHSA-h7mg-cq63-vhpq, GHSA-4h7h-rv7c-7m2v, GHSA-3gg2-335m-rxc6, GHSA-4m76-xfj5-7975 and GHSA-46wx-v44x-9hh2, together with the later fixes published in GHSA-92p4-j3wq-jmqx, GHSA-39q9-qp46-w8xg, GHSA-h25j-2p75-qj33 and GHSA-74fm-fwc7-3fwp. The Worker uses the SDK's Web-standard transport, not its Hono-based Node server entry point; the update keeps the locked tree free of known advisories.
+
+### Changed
+
+- Update the MCP SDK to 1.32.2, CfWorker JSON Schema to 4.1.6, Wrangler to 4.162.0 and Workers types to 5.20261116.1. The three security overrides remain in force because the Cloudflare test pool still pins older Miniflare, Undici and Zod releases.
+- Update the pinned CodeQL init and analyze Actions to 4.39.1.
+
 ## [0.2.3] - 2026-11-11
 
 ### Security
